@@ -1,13 +1,12 @@
 import java.net.*; 
 import java.io.*; 
 
-public class Server {
+public class Server extends Thread {
 	private ServerSocket welcomeSocket;
 	private Socket connectionSocket;
 	
 	public Server(int port) throws Exception {
 		this.welcomeSocket = new ServerSocket(port);
-		
 	}
 	
 	public void listen() throws Exception {
@@ -23,6 +22,16 @@ public class Server {
 		outToClient.writeBytes(message + "\n");
 	}
 	
+	public void run() {
+		try {
+			while(true) {
+				listen();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/*
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(56789);

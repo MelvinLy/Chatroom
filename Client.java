@@ -2,7 +2,7 @@ import java.net.*;
 import java.util.Scanner;
 import java.io.*; 
 
-public class Client {
+public class Client extends Thread {
 	private Socket clientSocket;
 	
 	public Client(String name, int port) throws Exception {
@@ -22,6 +22,16 @@ public class Client {
 	
 	public void close() throws Exception{
 		clientSocket.close();
+	}
+	
+	public void run() {
+		Scanner s = new Scanner(System.in);
+		String message = s.nextLine();
+		try {
+			send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/*
