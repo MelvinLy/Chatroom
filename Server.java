@@ -22,7 +22,7 @@ public class Server {
 		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		outToClient.writeBytes(message + "\n");
 	}
-
+	
 	/*
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(56789);
