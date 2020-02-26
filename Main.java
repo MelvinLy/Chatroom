@@ -12,7 +12,7 @@ public class Main {
 			try {
 				Client c = new Client(args[0], Integer.parseInt(args[1]));
 				String message = input.nextLine();
-				c.send(args[3] + ": " + message + "\n");
+				c.send(/*args[3] + ": " + */ message + "\n");
 			}
 			catch(Exception e) {
 				
