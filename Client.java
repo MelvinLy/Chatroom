@@ -5,7 +5,7 @@ import java.io.*;
 public class Client {
 	
 	static final String NAME = "localhost";
-	static final int PORT = 51954;
+	static final int PORT = 56789;
 	
 	public static void main(String[] args) throws Exception {
 		
