@@ -17,7 +17,13 @@ public class Directory extends Thread {
 		String clientSentence;
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		clientSentence = inFromClient.readLine();
+		String name = clientSentence;
+		String hostname = this.connectionSocket.getInetAddress().getHostName();
+		String ip = this.connectionSocket.getInetAddress().getHostAddress();
+		int port = this.connectionSocket.getPort();
+		addUser(name, hostname, ip, port);
 		System.out.println(clientSentence);
+		System.out.println(ip);
 	}
 	
 	public boolean addUser(String name, String hostname, String ip, int port) {
@@ -41,18 +47,8 @@ public class Directory extends Thread {
 		outToClient.writeBytes(message + "\n");
 	}
 	
-	public void run() {
-		try {
-			while(true) {
-				listenForSignUp();
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static void main(String[] args) throws Exception {
-		
+		int port = Integer.parseInt(args[0]);
+		Directory d = new Directory(port);
 	}
 }
