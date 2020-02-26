@@ -5,10 +5,11 @@ import java.util.*;
 public class Directory extends Thread {
 	private ServerSocket welcomeSocket;
 	private Socket connectionSocket;
+	private ArrayList<Map<String, String>> db;
 
 	public Directory(int port) throws Exception {
 		this.welcomeSocket = new ServerSocket(port);
-		this.db = new ArrayList<HashMap<String, String>>();
+		this.db = new ArrayList<Map<String, String>>();
 	}
 	
 	public void listenForSignUp() throws Exception {
@@ -17,6 +18,10 @@ public class Directory extends Thread {
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		clientSentence = inFromClient.readLine();
 		System.out.println(clientSentence);
+	}
+	
+	public void addUser() {
+		
 	}
 	
 	public void send(String message) throws Exception {
