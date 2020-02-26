@@ -5,11 +5,11 @@ import java.util.*;
 public class Directory extends Thread {
 	private ServerSocket welcomeSocket;
 	private Socket connectionSocket;
-	private ArrayList<Map<String, String>> db;
+	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
 		this.welcomeSocket = new ServerSocket(port);
-		this.db = new ArrayList<Map<String, String>>();
+		this.db = new ArrayList<HashMap<String, String>>();
 	}
 	
 	public void listenForSignUp() throws Exception {
@@ -20,8 +20,15 @@ public class Directory extends Thread {
 		System.out.println(clientSentence);
 	}
 	
-	public void addUser() {
-		
+	public void addUser(String name, String hostname, String ip, int port) {
+		Map<String, String> temp = new HashMap<String, String>();
+		for(int a = 0; a < this.db.size(); a++) {
+			
+		}
+		temp.put("Username", name);
+		temp.put("Hostname", hostname);
+		temp.put("String", ip);
+		temp.put("Port", Integer.toString(port));
 	}
 	
 	public void send(String message) throws Exception {
