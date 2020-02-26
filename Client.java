@@ -3,26 +3,35 @@ import java.util.Scanner;
 import java.io.*; 
 
 public class Client {
+	private Socket clientSocket;
 	
-	static final String NAME = "localhost";
-	static final int PORT = 56789;
+	public Client(String name, int port) throws Exception {
+		this.clientSocket = new Socket(name, port);
+	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		Scanner s = new Scanner(System.in);
-		BufferedReader inUser = new BufferedReader(new InputStreamReader(System.in));
-
-		Socket clientSocket = new Socket(NAME, PORT);
-		
+	public void send(String message) throws Exception {
 		DataOutputStream outServer = new DataOutputStream(clientSocket.getOutputStream());
-		
+		outServer.writeBytes(message + "\n");
+	}
+	
+	public String receive() throws Exception {
 		BufferedReader inServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-		
-		String sentenceOut = s.nextLine();
-		
-		outServer.writeBytes(sentenceOut + "\n");
 		String sentenceIn = inServer.readLine();
-		System.out.println(sentenceIn);
+		return sentenceIn;
+	}
+	
+	public void close() throws Exception{
 		clientSocket.close();
 	}
+	
+	/*
+	public static void main(String[] args) throws Exception {
+		Client client = new Client("localhost", 56789);
+		Scanner s = new Scanner(System.in);
+		String message = s.nextLine();
+		client.send(message);
+		System.out.println(client.receive());
+		client.close();
+	}
+	*/
 }
