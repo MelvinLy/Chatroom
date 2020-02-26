@@ -5,18 +5,16 @@ import java.util.*;
 public class Directory extends Thread {
 	private ServerSocket welcomeSocket;
 	private Socket connectionSocket;
-	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
 		this.welcomeSocket = new ServerSocket(port);
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
 	
-	public void listen() throws Exception {
+	public void listenForSignUp() throws Exception {
 		this.connectionSocket = welcomeSocket.accept();
 		String clientSentence;
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		byte[] IP = connectionSocket.getInetAddress().getAddress();
 		clientSentence = inFromClient.readLine();
 		System.out.println(clientSentence);
 	}
@@ -29,19 +27,15 @@ public class Directory extends Thread {
 	public void run() {
 		try {
 			while(true) {
-				listen();
+				listenForSignUp();
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	/*
+	
 	public static void main(String[] args) throws Exception {
-		Server server = new Server(56789);
-		while(true) {
-			server.listen();
-		}
+		
 	}
-	*/
 }
