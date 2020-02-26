@@ -20,15 +20,20 @@ public class Directory extends Thread {
 		System.out.println(clientSentence);
 	}
 	
-	public void addUser(String name, String hostname, String ip, int port) {
+	public boolean addUser(String name, String hostname, String ip, int port) {
 		Map<String, String> temp = new HashMap<String, String>();
 		for(int a = 0; a < this.db.size(); a++) {
-			
+			HashMap<String, String> current = this.db.get(a);
+			String cName = current.get(name);
+			if(cName.equals(name)) {
+				return false;
+			}
 		}
 		temp.put("Username", name);
 		temp.put("Hostname", hostname);
 		temp.put("String", ip);
 		temp.put("Port", Integer.toString(port));
+		return true;
 	}
 	
 	public void send(String message) throws Exception {
