@@ -22,8 +22,6 @@ public class Directory extends Thread {
 		String ip = this.connectionSocket.getInetAddress().getHostAddress();
 		int port = this.connectionSocket.getPort();
 		addUser(name, hostname, ip, port);
-		System.out.println(clientSentence);
-		System.out.println(ip);
 	}
 	
 	public boolean addUser(String name, String hostname, String ip, int port) {
