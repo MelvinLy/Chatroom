@@ -50,5 +50,13 @@ public class Directory extends Thread {
 	public static void main(String[] args) throws Exception {
 		int port = Integer.parseInt(args[0]);
 		Directory d = new Directory(port);
+		while(true) {
+			try {
+				d.listenForSignUp();
+			}
+			catch(Exception e) {
+				
+			}
+		}
 	}
 }

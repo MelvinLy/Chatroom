@@ -8,9 +8,9 @@ public class Main {
 		Server s = new Server(Integer.parseInt(args[2]));
 		s.start();
 		while(true) {
+			Scanner input = new Scanner(System.in);
 			try {
 				Client c = new Client(args[0], Integer.parseInt(args[1]));
-				Scanner input = new Scanner(System.in);
 				String message = input.nextLine();
 				c.send(args[3] + ": " + message + "\n");
 			}
