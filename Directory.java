@@ -7,7 +7,7 @@ public class Directory extends Thread {
 	private Socket connectionSocket;
 	private ArrayList<HashMap<String, String>> db;
 
-	public Server(int port) throws Exception {
+	public Directory(int port) throws Exception {
 		this.welcomeSocket = new ServerSocket(port);
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
