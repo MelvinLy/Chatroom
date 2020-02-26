@@ -16,7 +16,7 @@ public class Directory extends Thread {
 		this.connectionSocket = welcomeSocket.accept();
 		String clientSentence;
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		
+		byte[] IP = connectionSocket.getInetAddress().getAddress();
 		clientSentence = inFromClient.readLine();
 		System.out.println(clientSentence);
 	}
