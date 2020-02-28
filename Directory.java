@@ -37,7 +37,7 @@ public class Directory extends Thread {
 		temp.put("Hostname", hostname);
 		temp.put("String", ip);
 		temp.put("Port", Integer.toString(port));
-		System.out.printf("Received %s %s %s %s", name, hostname, ip, Integer.toString(port));
+		System.out.printf("Received: %s %s %s %s\n", name, hostname, ip, Integer.toString(port));
 		return true;
 	}
 	
