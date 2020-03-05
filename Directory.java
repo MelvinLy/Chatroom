@@ -12,6 +12,10 @@ public class Directory extends Thread {
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
 	
+	public ArrayList<HashMap<String, String>> getDb() {
+		return (ArrayList<HashMap<String, String>>) this.db.clone();
+	}
+	
 	public void listenForSignUp() throws Exception {
 		this.connectionSocket = welcomeSocket.accept();
 		String clientSentence;
@@ -46,7 +50,7 @@ public class Directory extends Thread {
 		outToClient.writeBytes(message + "\n");
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception { 
 		int port = Integer.parseInt(args[0]);
 		Directory d = new Directory(port);
 		while(true) {
