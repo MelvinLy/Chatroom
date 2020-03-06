@@ -9,7 +9,6 @@ public class GUI {
 
     public GUI(){
     	login();
-
     }
 
     private JPanel createButtons() {
