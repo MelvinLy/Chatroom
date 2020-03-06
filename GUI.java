@@ -121,7 +121,7 @@ public class GUI {
 							HashMap<String, String> current = db.get(a);
 							System.out.println(db);
 							try {
-								Client out = new Client(current.get("Hostname"), Integer.parseInt(current.get("Port")));
+								Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
 								out.send(text);
 							}
 							catch (Exception e1) {
