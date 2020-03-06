@@ -6,7 +6,6 @@ import java.io.*;
 
 public class Client extends Thread {
 	private Socket clientSocket;
-	private ArrayList<HashMap<String, String>> db;
 
 	public Client(String name, int port) throws Exception {
 		this.clientSocket = new Socket(name, port);

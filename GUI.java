@@ -15,9 +15,12 @@ public class GUI {
 	String username;
 	ArrayList<HashMap<String, String>> db;
 	JTextArea online;
+	JTextArea history;
+	JTextArea messageInput;
 	Client c;
 	Client c2;
 	Server s;
+	int semaphore = 1;
 
 	public GUI(){
 		login();
@@ -57,17 +60,41 @@ public class GUI {
 			public void run() {
 				while(true) {
 					try {
-						c2 = new Client(hostname, Integer.parseInt(directoryport));
-						db = c2.fetchOnline();
-						String replace = "List of Users Online:";
-						for(int a = 0; a < db.size(); a++) {
-							HashMap<String, String> current = db.get(a);
-							replace = replace + "\n" + current.get("Username");
+						if(semaphore == 1) {
+							//CRITICAL SECTION
+							semaphore = 0;
+							c2 = new Client(hostname, Integer.parseInt(directoryport));
+							db = c2.fetchOnline();
+							String replace = "List of Users Online:";
+							for(int a = 0; a < db.size(); a++) {
+								HashMap<String, String> current = db.get(a);
+								replace = replace + "\n" + current.get("Username");
+							}
+							online.setText(replace);
+							semaphore = 1;
 						}
-						online.setText(replace);
 						Thread.sleep(5000);
 					} catch (Exception ex) {
 						Thread.currentThread().interrupt();
+					}
+				}
+			}
+		}.start();
+		new Thread() {
+			public void run() {
+				try {
+					s = new Server(Integer.parseInt(serverport));
+				} 
+				catch (Exception e1) {
+					e1.printStackTrace();
+					System.exit(1);
+				}
+				while(true) {
+					try {
+						String incoming = s.listen();
+						history.append("\n" + incoming);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -78,9 +105,44 @@ public class GUI {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 		//        panel.setBorder(BorderFactory.createLineBorder(Color.black));
+		class SendListener implements MouseListener {
+			public void mouseClicked(MouseEvent e) {
+				while(true) {
+					String text = messageInput.getText();
+					if(text.equals("") || text == null) {
+						return;
+					}
+					if(semaphore == 1) {
+						//CRITICAL SECTION
+						semaphore = 0;
+						messageInput.setText(null);
+						for(int a = 0; a < db.size(); a++) {
+							HashMap<String, String> current = db.get(a);
+							try {
+								Client out = new Client(current.get("Hostname"), Integer.parseInt(current.get("Port")));
+								text = username + ": " + text;
+								out.send(text);
+							}
+							catch (Exception e1) {
+
+							}
+						}
+						semaphore = 1;
+						break;
+					}
+				}
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+		}
 		JButton sendButton = new JButton("Send");
 		JButton clientButton = new JButton("Client");
 		JButton serverButton = new JButton("Server");
+
+		sendButton.addMouseListener(new SendListener());
+
 		panel.add(sendButton);
 		panel.add(Box.createRigidArea(new Dimension(0,5)));
 		panel.add(clientButton);
@@ -100,6 +162,7 @@ public class GUI {
 		//        jTextArea.setColumns(panel.getMaximumSize().width);
 		JScrollPane jScrollPane = new JScrollPane(jTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(jScrollPane);
+		this.messageInput = jTextArea;
 		return panel;
 	}
 
@@ -128,6 +191,7 @@ public class GUI {
 		JScrollPane jScrollPane = new JScrollPane(jTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(jScrollPane);
 		//        jScrollPane.setPreferredSize(panel.getPreferredSize());
+		this.history = jTextArea;
 		return panel;
 	}    
 
@@ -160,13 +224,6 @@ public class GUI {
 				directoryport = dPort.getText();
 				serverport = cPort.getText();
 				username = user.getText();
-				try {
-					s = new Server(Integer.parseInt(serverport));
-				} 
-				catch (Exception e1) {
-					e1.printStackTrace();
-					System.exit(1);
-				}
 				try {
 					Client c = new Client(hostname, Integer.parseInt(directoryport));
 					c.send("joining" + " " + username + " " + serverport);
@@ -220,7 +277,6 @@ public class GUI {
 	}
 
 	public static void main(String[] args) {
-		GUI frame = new GUI();
-
+		new GUI();
 	}
 }
