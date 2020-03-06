@@ -11,6 +11,7 @@ public class GUI {
 	String directoryport;
 	String serverport;
 	String username;
+	Server s;
 
     public GUI(){
     	login();
@@ -95,6 +96,13 @@ public class GUI {
 				directoryport = dPort.getText();
 				serverport = cPort.getText();
 				username = user.getText();
+				try {
+					s = new Server(Integer.parseInt(serverport));
+				} 
+				catch (Exception e1) {
+					e1.printStackTrace();
+					System.exit(1);
+				}
 				
 				panel.remove(send);
 		        JFrame jFrame = new JFrame();
