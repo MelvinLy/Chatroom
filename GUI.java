@@ -1,27 +1,15 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GUI {
 
     public GUI(){
     	login();
-        JFrame jFrame = new JFrame();
-        jFrame.setResizable(false);
-        
-        JPanel south = new JPanel();
-        south.add(createTextInput());
-        south.add(createButtons());
-        south.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        jFrame.add(createChatHistory(), BorderLayout.CENTER);
-        jFrame.add(createUsers(), BorderLayout.EAST);
-        jFrame.add(south, BorderLayout.SOUTH);
-
-        jFrame.setSize(1000,800);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setTitle("Chatroom");
-        jFrame.setVisible(true);
     }
 
     private JPanel createButtons() {
@@ -88,9 +76,40 @@ public class GUI {
     	JTextArea port = new JTextArea("Enter Port");
     	user.setPreferredSize(new Dimension(450, 20));
     	port.setPreferredSize(new Dimension(450, 20));
-    	
-    	JButton send = new JButton("Send to Directory Server");
  
+    	JButton send = new JButton("Send to Directory Server");
+    	
+    	class SendListener implements MouseListener {
+
+			public void mouseClicked(MouseEvent e) {
+				panel.remove(send);
+		        JFrame jFrame = new JFrame();
+		        jFrame.setResizable(false);
+		        
+		        JPanel south = new JPanel();
+		        south.add(createTextInput());
+		        south.add(createButtons());
+		        south.setBorder(BorderFactory.createLineBorder(Color.black));
+
+		        jFrame.add(createChatHistory(), BorderLayout.CENTER);
+		        jFrame.add(createUsers(), BorderLayout.EAST);
+		        jFrame.add(south, BorderLayout.SOUTH);
+
+		        jFrame.setSize(1000,800);
+		        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        jFrame.setTitle("Chatroom");
+		        jFrame.setVisible(true);
+			}
+			
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+    		
+    	}
+    	
+    	send.addMouseListener(new SendListener());
+    	
     	panel.add(user);
     	panel.add(port);
     	panel.add(send);
