@@ -10,6 +10,7 @@ public class Main {
 		String serverport = args[2];
 		String username = args[3];
 		Server s = new Server(Integer.parseInt(serverport));
+		new GUI();
 		s.start();
 		while(true) {
 			Scanner input = new Scanner(System.in);

@@ -5,8 +5,10 @@ import java.awt.*;
 public class GUI {
 
     public GUI(){
+    	login();
         JFrame jFrame = new JFrame();
-
+        jFrame.setResizable(false);
+        
         JPanel south = new JPanel();
         south.add(createTextInput());
         south.add(createButtons());
@@ -76,9 +78,33 @@ public class GUI {
         panel.add(jScrollPane);
 //        jScrollPane.setPreferredSize(panel.getPreferredSize());
         return panel;
+    }    
+    
+    private void login() {
+    	JFrame jFrame = new JFrame();
+    	JPanel panel = new JPanel();
+    	
+    	JTextArea user = new JTextArea("Enter Username");
+    	JTextArea port = new JTextArea("Enter Port");
+    	user.setPreferredSize(new Dimension(450, 20));
+    	port.setPreferredSize(new Dimension(450, 20));
+    	
+    	JButton send = new JButton("Send to Directory Server");
+ 
+    	panel.add(user);
+    	panel.add(port);
+    	panel.add(send);
+    	jFrame.add(panel);
+    	
+    	jFrame.setResizable(false);
+    	jFrame.setSize(500, 250);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setTitle("Login");
+        jFrame.setVisible(true);
     }
-
+    
     public static void main(String[] args) {
         new GUI();
     }
+    
 }
