@@ -6,6 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GUI {
+	
+	String hostname;
+	String directoryport;
+	String serverport;
+	String username;
 
     public GUI(){
     	login();
@@ -72,17 +77,25 @@ public class GUI {
     	JPanel panel = new JPanel();
     	
     	JTextArea user = new JTextArea("Enter Username");
-    	JTextArea cPort = new JTextArea("Enter Your Port");
-    	JTextArea dPort = new JTextArea("Enter Your Directory Port");
+    	JTextArea cPort = new JTextArea("Enter Your Server Port");
+    	JTextArea dPort = new JTextArea("Enter the Directory Server Port");
+    	JTextArea host = new JTextArea("Enter Server Host Name");
     	user.setPreferredSize(new Dimension(450, 20));
     	cPort.setPreferredSize(new Dimension(450, 20));
     	dPort.setPreferredSize(new Dimension(450, 20));
+    	host.setPreferredSize(new Dimension(450, 20));    	 
  
     	JButton send = new JButton("Send to Directory Server");
     	
     	class SendListener implements MouseListener {
 
 			public void mouseClicked(MouseEvent e) {
+				
+				hostname = host.getText();
+				directoryport = dPort.getText();
+				serverport = cPort.getText();
+				username = user.getText();
+				
 				panel.remove(send);
 		        JFrame jFrame = new JFrame();
 		        jFrame.setResizable(false);
@@ -114,6 +127,7 @@ public class GUI {
     	panel.add(user);
     	panel.add(cPort);
     	panel.add(dPort);
+    	panel.add(host);
     	panel.add(send);
     	jFrame.add(panel);
     	
