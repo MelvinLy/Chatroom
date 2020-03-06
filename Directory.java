@@ -18,17 +18,28 @@ public class Directory extends Thread {
 	
 	public void listenForSignUp() throws Exception {
 		this.connectionSocket = welcomeSocket.accept();
-		String clientSentence;
+		String[] clientSentence;
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		clientSentence = inFromClient.readLine();
-		String name = clientSentence;
+		String read = inFromClient.readLine();
+		if(read.equals("leaving")) {
+			for(int a = 0; a < db.size(); a++) {
+				HashMap<String, String> current = db.get(a);
+			}
+			return;
+		}
+		clientSentence = read.split(" ");
+		String name = "";
+		for(int a = 0; a < clientSentence.length - 2; a++) {
+			name = name + clientSentence[a] + " ";
+		}
+		name = name + clientSentence[clientSentence.length - 2];
 		String hostname = this.connectionSocket.getInetAddress().getHostName();
 		String ip = this.connectionSocket.getInetAddress().getHostAddress();
-		int port = this.connectionSocket.getPort();
+		String port = clientSentence[clientSentence.length - 1];
 		addUser(name, hostname, ip, port);
 	}
 	
-	public boolean addUser(String name, String hostname, String ip, int port) {
+	public boolean addUser(String name, String hostname, String ip, String port) {
 		Map<String, String> temp = new HashMap<String, String>();
 		for(int a = 0; a < this.db.size(); a++) {
 			HashMap<String, String> current = this.db.get(a);
@@ -40,8 +51,8 @@ public class Directory extends Thread {
 		temp.put("Username", name);
 		temp.put("Hostname", hostname);
 		temp.put("String", ip);
-		temp.put("Port", Integer.toString(port));
-		System.out.printf("Received: \"%s\" %s %s %s \n", name, hostname, ip, Integer.toString(port));
+		temp.put("Port", port);
+		System.out.printf("Received: \"%s\" %s %s %s \n", name, hostname, ip, port);
 		return true;
 	}
 	

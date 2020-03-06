@@ -11,6 +11,7 @@ public class GUI {
 	String directoryport;
 	String serverport;
 	String username;
+	Client c;
 	Server s;
 
     public GUI(){
@@ -103,6 +104,14 @@ public class GUI {
 					e1.printStackTrace();
 					System.exit(1);
 				}
+				try {
+					Client c = new Client(hostname, Integer.parseInt(directoryport));
+					c.send(username + " " + serverport);
+				}
+				catch(Exception e1) {
+					e1.printStackTrace();
+					System.exit(1);
+				}
 				
 				panel.remove(send);
 		        JFrame jFrame = new JFrame();
@@ -121,6 +130,19 @@ public class GUI {
 		        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		        jFrame.setTitle("Chatroom");
 		        jFrame.setVisible(true);
+		        jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+		            @Override
+		            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		            	try {
+							Client c = new Client(hostname, Integer.parseInt(directoryport));
+							c.send("leaving");
+						}
+						catch(Exception e1) {
+							e1.printStackTrace();
+							System.exit(1);
+						}
+		            }
+		        });
 			}
 			
 			public void mousePressed(MouseEvent e) {}
