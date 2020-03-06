@@ -73,9 +73,11 @@ public class GUI {
     	JPanel panel = new JPanel();
     	
     	JTextArea user = new JTextArea("Enter Username");
-    	JTextArea port = new JTextArea("Enter Port");
+    	JTextArea cPort = new JTextArea("Enter Your Port");
+    	JTextArea dPort = new JTextArea("Enter Your Directory Port");
     	user.setPreferredSize(new Dimension(450, 20));
-    	port.setPreferredSize(new Dimension(450, 20));
+    	cPort.setPreferredSize(new Dimension(450, 20));
+    	dPort.setPreferredSize(new Dimension(450, 20));
  
     	JButton send = new JButton("Send to Directory Server");
     	
@@ -111,7 +113,8 @@ public class GUI {
     	send.addMouseListener(new SendListener());
     	
     	panel.add(user);
-    	panel.add(port);
+    	panel.add(cPort);
+    	panel.add(dPort);
     	panel.add(send);
     	jFrame.add(panel);
     	
