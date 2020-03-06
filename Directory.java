@@ -22,8 +22,13 @@ public class Directory extends Thread {
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		String read = inFromClient.readLine();
 		if(read.equals("leaving")) {
+			String ip = this.connectionSocket.getInetAddress().getHostAddress();
 			for(int a = 0; a < db.size(); a++) {
 				HashMap<String, String> current = db.get(a);
+				if(current.get("IP").equals(ip)) {
+					db.remove(a);
+					return;
+				}
 			}
 			return;
 		}
@@ -50,7 +55,7 @@ public class Directory extends Thread {
 		}
 		temp.put("Username", name);
 		temp.put("Hostname", hostname);
-		temp.put("String", ip);
+		temp.put("IP", ip);
 		temp.put("Port", port);
 		System.out.printf("Received: \"%s\" %s %s %s \n", name, hostname, ip, port);
 		return true;
