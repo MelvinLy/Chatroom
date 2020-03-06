@@ -228,7 +228,7 @@ public class GUI {
 				ArrayList<HashMap<String, String>> temp = null;
 				try {
 					Client tempC = new Client(hostname, Integer.parseInt(directoryport));
-					temp = c2.fetchOnline();
+					temp = tempC.fetchOnline();
 				} catch (Exception e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
