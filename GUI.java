@@ -14,6 +14,7 @@ public class GUI {
 	String serverport;
 	String username;
 	ArrayList<HashMap<String, String>> db;
+	JTextArea online;
 	Client c;
 	Client c2;
 	Server s;
@@ -51,12 +52,19 @@ public class GUI {
 				}
 			}
 		});
+		//Fetch thread.
 		new Thread() {
 			public void run() {
 				while(true) {
 					try {
 						c2 = new Client(hostname, Integer.parseInt(directoryport));
 						db = c2.fetchOnline();
+						String replace = "List of Users Online:";
+						for(int a = 0; a < db.size(); a++) {
+							HashMap<String, String> current = db.get(a);
+							replace = replace + "\n" + current.get("Username");
+						}
+						online.setText(replace);
 						Thread.sleep(5000);
 					} catch (Exception ex) {
 						Thread.currentThread().interrupt();
@@ -103,6 +111,7 @@ public class GUI {
 		jTextArea.setEditable(false);
 		//        jTextArea.setColumns(panel.getMaximumSize().width);
 		jTextArea.setText("List of Users Online:");
+		online = jTextArea;
 		JScrollPane jScrollPane = new JScrollPane(jTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(jScrollPane);
 		return panel;

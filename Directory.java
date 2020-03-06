@@ -59,7 +59,7 @@ public class Directory extends Thread {
 		Map<String, String> temp = new HashMap<String, String>();
 		for(int a = 0; a < this.db.size(); a++) {
 			HashMap<String, String> current = this.db.get(a);
-			String cName = current.get(name);
+			String cName = current.get("Username");
 			if(cName.equals(name)) {
 				return false;
 			}
