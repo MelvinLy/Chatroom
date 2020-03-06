@@ -9,12 +9,12 @@ public class Server extends Thread {
 		this.welcomeSocket = new ServerSocket(port);
 	}
 	
-	public void listen() throws Exception {
+	public String listen() throws Exception {
 		this.connectionSocket = welcomeSocket.accept();
 		String clientSentence;
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		clientSentence = inFromClient.readLine();
-		System.out.println(clientSentence);
+		return clientSentence;
 	}
 	
 	public void send(String message) throws Exception {
