@@ -116,11 +116,11 @@ public class GUI {
 						//CRITICAL SECTION
 						semaphore = 0;
 						messageInput.setText(null);
+						text = username + ": " + text;
 						for(int a = 0; a < db.size(); a++) {
-							HashMap<String, String> current = db.get(a);
+							HashMap<String, String> current = db.get(a);	
 							try {
 								Client out = new Client(current.get("Hostname"), Integer.parseInt(current.get("Port")));
-								text = username + ": " + text;
 								out.send(text);
 							}
 							catch (Exception e1) {
@@ -128,7 +128,7 @@ public class GUI {
 							}
 						}
 						semaphore = 1;
-						break;
+						return;
 					}
 				}
 			}
