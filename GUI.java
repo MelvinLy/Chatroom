@@ -119,7 +119,6 @@ public class GUI {
 						text = username + ": " + text;
 						for(int a = 0; a < db.size(); a++) {
 							HashMap<String, String> current = db.get(a);
-							System.out.println(db);
 							try {
 								Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
 								out.send(text);
@@ -225,6 +224,23 @@ public class GUI {
 				directoryport = dPort.getText();
 				serverport = cPort.getText();
 				username = user.getText();
+				
+				ArrayList<HashMap<String, String>> temp = null;
+				try {
+					Client tempC = new Client(hostname, Integer.parseInt(directoryport));
+					temp = c2.fetchOnline();
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				
+				for(int a = 0; a < temp.size(); a++) {
+					HashMap<String, String> current = temp.get(a);
+					if(current.get("Username").equals(username)) {
+						System.exit(0);
+					}
+				}
+				
 				try {
 					Client c = new Client(hostname, Integer.parseInt(directoryport));
 					c.send("joining" + " " + username + " " + serverport);
