@@ -16,7 +16,7 @@ public class Directory extends Thread {
 		return (ArrayList<HashMap<String, String>>) this.db.clone();
 	}
 
-	public void listenForSignUp() throws Exception {
+	public void listen() throws Exception {
 		this.connectionSocket = welcomeSocket.accept();
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		String[] read = inFromClient.readLine().split(" ");
@@ -76,7 +76,7 @@ public class Directory extends Thread {
 		Directory d = new Directory(port);
 		while(true) {
 			try {
-				d.listenForSignUp();
+				d.listen();
 			}
 			catch(Exception e) {
 
