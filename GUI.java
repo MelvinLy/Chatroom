@@ -118,7 +118,8 @@ public class GUI {
 						messageInput.setText(null);
 						text = username + ": " + text;
 						for(int a = 0; a < db.size(); a++) {
-							HashMap<String, String> current = db.get(a);	
+							HashMap<String, String> current = db.get(a);
+							System.out.println(db);
 							try {
 								Client out = new Client(current.get("Hostname"), Integer.parseInt(current.get("Port")));
 								out.send(text);
