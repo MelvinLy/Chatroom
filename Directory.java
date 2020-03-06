@@ -20,6 +20,7 @@ public class Directory extends Thread {
 		this.connectionSocket = welcomeSocket.accept();
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		String[] read = inFromClient.readLine().split(" ");
+		//Removes user.
 		if(read[0].equals("leaving")) {
 			String username = "";
 			for(int a = 1; a < read.length - 1; a++) {
@@ -35,6 +36,7 @@ public class Directory extends Thread {
 				}
 			}
 		}
+		//Registers user.
 		else if(read[0].equals("joining")) {
 			String name = "";
 			for(int a = 1; a < read.length - 2; a++) {
@@ -45,6 +47,11 @@ public class Directory extends Thread {
 			String ip = this.connectionSocket.getInetAddress().getHostAddress();
 			String port = read[read.length - 1];
 			addUser(name, hostname, ip, port);
+		}
+		//Send list of users.
+		else if(read[0].equals("fetch")) {
+			ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
+			outToClient.writeObject(db);
 		}
 	}
 

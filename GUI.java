@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GUI {
 
@@ -11,11 +13,57 @@ public class GUI {
 	String directoryport;
 	String serverport;
 	String username;
+	ArrayList<HashMap<String, String>> db;
 	Client c;
+	Client c2;
 	Server s;
 
 	public GUI(){
 		login();
+	}
+
+	public void startChatRoom() throws NumberFormatException, Exception {
+		JFrame jFrame = new JFrame();
+		jFrame.setResizable(false);
+
+		JPanel south = new JPanel();
+		south.add(createTextInput());
+		south.add(createButtons());
+		south.setBorder(BorderFactory.createLineBorder(Color.black));
+
+		jFrame.add(createChatHistory(), BorderLayout.CENTER);
+		jFrame.add(createUsers(), BorderLayout.EAST);
+		jFrame.add(south, BorderLayout.SOUTH);
+
+		jFrame.setSize(1000,800);
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jFrame.setTitle("Chatroom");
+		jFrame.setVisible(true);
+		jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				try {
+					Client c = new Client(hostname, Integer.parseInt(directoryport));
+					c.send("leaving " + username);
+				}
+				catch(Exception e1) {
+					e1.printStackTrace();
+					System.exit(1);
+				}
+			}
+		});
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						c2 = new Client(hostname, Integer.parseInt(directoryport));
+						db = c2.fetchOnline();
+						Thread.sleep(5000);
+					} catch (Exception ex) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+		}.start();
 	}
 
 	private JPanel createButtons() {
@@ -120,34 +168,12 @@ public class GUI {
 				}
 
 				panel.remove(send);
-				JFrame jFrame = new JFrame();
-				jFrame.setResizable(false);
-
-				JPanel south = new JPanel();
-				south.add(createTextInput());
-				south.add(createButtons());
-				south.setBorder(BorderFactory.createLineBorder(Color.black));
-
-				jFrame.add(createChatHistory(), BorderLayout.CENTER);
-				jFrame.add(createUsers(), BorderLayout.EAST);
-				jFrame.add(south, BorderLayout.SOUTH);
-
-				jFrame.setSize(1000,800);
-				jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				jFrame.setTitle("Chatroom");
-				jFrame.setVisible(true);
-				jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-					public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-						try {
-							Client c = new Client(hostname, Integer.parseInt(directoryport));
-							c.send("leaving " + username);
-						}
-						catch(Exception e1) {
-							e1.printStackTrace();
-							System.exit(1);
-						}
-					}
-				});
+				try {
+					startChatRoom();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 			public void mousePressed(MouseEvent e) {}
@@ -178,14 +204,14 @@ public class GUI {
 					c.send("leaving " + username);
 				}
 				catch(Exception e1) {
-					
+
 				}
 			}
 		});
 	}
 
 	public static void main(String[] args) {
-		new GUI();
-	}
+		GUI frame = new GUI();
 
+	}
 }
