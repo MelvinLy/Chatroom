@@ -3,12 +3,13 @@ import java.io.*;
 import java.util.*;
 
 public class Directory extends Thread {
-	private ServerSocket welcomeSocket;
-	private Socket connectionSocket;
+	private DatagramSocket socket;
+	private boolean running;
+	private byte[] buf = new byte[256];
 	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
-		this.welcomeSocket = new ServerSocket(port);
+		socket = new DatagramSocket(port);
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
 
@@ -17,7 +18,12 @@ public class Directory extends Thread {
 	}
 
 	public void listen() throws Exception {
-		this.connectionSocket = welcomeSocket.accept();
+		DatagramPacket packet = new DatagramPacket(buf, buf.length);
+		socket.receive(packet);
+		InetAddress address = packet.getAddress();
+		int port = packet.getPort();
+		DatagramPacket sendOut = new DatagramPacket(buf, buf.length, address, port);
+		/*
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		String[] read = inFromClient.readLine().split(" ");
 		//Removes user.
@@ -53,6 +59,7 @@ public class Directory extends Thread {
 			ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
 			outToClient.writeObject(db);
 		}
+		*/
 	}
 
 	public boolean addUser(String name, String hostname, String ip, String port) {
@@ -72,11 +79,13 @@ public class Directory extends Thread {
 		System.out.printf("Received: \"%s\" %s %s %s \n", name, hostname, ip, port);
 		return true;
 	}
-
+	
+	/*
 	public void send(String message) throws Exception {
 		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		outToClient.writeBytes(message + "\n");
 	}
+	*/
 
 	public static void main(String[] args) throws Exception { 
 		int port = Integer.parseInt(args[0]);
