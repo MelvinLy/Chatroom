@@ -27,7 +27,7 @@ public class Client extends Thread {
 	}
 
 	public ArrayList<HashMap<String, String>> fetchOnline() throws Exception {
-		send("fetch");
+		send("fetch ");
 		InputStream inputStream = clientSocket.getInputStream();
 		ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 		return (ArrayList<HashMap<String, String>>) objectInputStream.readObject();

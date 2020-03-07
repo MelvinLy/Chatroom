@@ -1,9 +1,14 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UDPClient extends Thread {
 	private DatagramSocket udp;
@@ -38,9 +43,31 @@ public class UDPClient extends Thread {
 		return toReturn;
 	}
 	
-	public static void main(String args[]) throws IOException {
+	public ArrayList<HashMap<String, String>> fetchDb() throws IOException, ClassNotFoundException {
+		this.send("fetch ");
+		ArrayList<HashMap<String, String>> toReturn = new ArrayList<HashMap<String, String>>();
+		while(true) {
+			byte[] receive = new byte[576];
+			DatagramPacket in = new DatagramPacket(receive, receive.length);
+			udp.receive(in);
+			String string = new String(receive, 0, receive.length);
+			String[] read = string.split(" ");
+			if(read[0].equals("end")) {
+				break;
+			}
+			ByteArrayInputStream byteIn = new ByteArrayInputStream(receive);
+		    ObjectInputStream ois = new ObjectInputStream(byteIn);
+		    HashMap<String, String> map = (HashMap<String, String>) ois.readObject();
+		    toReturn.add(map);
+		}
+		return toReturn;
+	}
+	/*
+	public static void main(String args[]) throws IOException, InterruptedException, ClassNotFoundException {
 		UDPClient lol = new UDPClient(56789, "localhost");
 		lol.send("joining big boi 56788");
-		System.out.println(lol.receive());
+		lol = new UDPClient(56789, "localhost");
+		System.out.println(lol.fetchDb());
 	}
+	*/
 }

@@ -62,7 +62,10 @@ public class Directory extends Thread {
 			    DatagramPacket toSend = new DatagramPacket(byteOut.toByteArray(), byteOut.size(), address, port);
 			    socket.send(toSend);
 			}
+			DatagramPacket toSend = new DatagramPacket("end ".getBytes(), 4, address, port);
+			socket.send(toSend);
 		}
+		buf = new byte[576];
 	}
 
 	public boolean addUser(String name, String hostname, String ip, String port) {
