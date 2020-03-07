@@ -3,14 +3,12 @@ import java.io.*;
 import java.util.*;
 
 public class Directory extends Thread {
-	private DatagramSocket udp;
-	//private ServerSocket welcomeSocket;
-	//private Socket connectionSocket;
-	private byte[] buffer = new byte[5000];
+	private ServerSocket welcomeSocket;
+	private Socket connectionSocket;
 	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
-		//this.welcomeSocket = new ServerSocket(port);
+		this.welcomeSocket = new ServerSocket(port);
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
 
@@ -19,13 +17,9 @@ public class Directory extends Thread {
 	}
 
 	public void listen() throws Exception {
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-		udp.receive(packet);
-		//this.connectionSocket = welcomeSocket.accept();
-		
-		byte[] data = packet.getData();
-		String byteToString = new String(data);
-		String[] read = byteToString.split(" ");
+		this.connectionSocket = welcomeSocket.accept();
+		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+		String[] read = inFromClient.readLine().split(" ");
 		//Removes user.
 		if(read[0].equals("leaving")) {
 			String username = "";
@@ -49,21 +43,15 @@ public class Directory extends Thread {
 				name = name + read[a] + " ";
 			}
 			name = name + read[read.length - 2];
-			String hostname = udp.getInetAddress().getHostName();
-			String ip = udp.getInetAddress().getHostAddress();
+			String hostname = this.connectionSocket.getInetAddress().getHostName();
+			String ip = this.connectionSocket.getInetAddress().getHostAddress();
 			String port = read[read.length - 1];
 			addUser(name, hostname, ip, port);
 		}
 		//Send list of users.
 		else if(read[0].equals("fetch")) {
-			//ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
-			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-			ObjectOutput oo = new ObjectOutputStream(bStream);
-			oo.writeObject(db);
-			oo.close();
-			byte[] message = bStream.toByteArray();
-			DatagramPacket temp = new DatagramPacket(message, message.length, packet.getAddress(), packet.getPort());
-			udp.send(temp);
+			ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
+			outToClient.writeObject(db);
 		}
 	}
 
@@ -84,12 +72,11 @@ public class Directory extends Thread {
 		System.out.printf("Received: \"%s\" %s %s %s \n", name, hostname, ip, port);
 		return true;
 	}
-	/*
+
 	public void send(String message) throws Exception {
 		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		outToClient.writeBytes(message + "\n");
 	}
-	*/
 
 	public static void main(String[] args) throws Exception { 
 		int port = Integer.parseInt(args[0]);
