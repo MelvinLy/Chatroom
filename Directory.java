@@ -12,7 +12,7 @@ public class Directory extends Thread {
 		socket = new DatagramSocket(port);
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
-
+	
 	public ArrayList<HashMap<String, String>> getDb() {
 		return (ArrayList<HashMap<String, String>>) this.db.clone();
 	}
@@ -22,10 +22,11 @@ public class Directory extends Thread {
 		socket.receive(packet);
 		InetAddress address = packet.getAddress();
 		int port = packet.getPort();
-		DatagramPacket sendOut = new DatagramPacket(buf, buf.length, address, port);
-		/*
-		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		String[] read = inFromClient.readLine().split(" ");
+		
+		byte[] receive = new byte[576];
+		byte[] received = packet.getData();
+		String string = new String(received, 0, received.length);
+		String[] read = string.split(" ");
 		//Removes user.
 		if(read[0].equals("leaving")) {
 			String username = "";
@@ -49,17 +50,17 @@ public class Directory extends Thread {
 				name = name + read[a] + " ";
 			}
 			name = name + read[read.length - 2];
-			String hostname = this.connectionSocket.getInetAddress().getHostName();
-			String ip = this.connectionSocket.getInetAddress().getHostAddress();
-			String port = read[read.length - 1];
-			addUser(name, hostname, ip, port);
+			String hostname = address.getHostName();
+			String ip = address.getHostAddress();
+			addUser(name, hostname, ip, port + "");
 		}
 		//Send list of users.
 		else if(read[0].equals("fetch")) {
-			ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
-			outToClient.writeObject(db);
+			String toSend = "";
+			for(int a = 0; a < db.size(); a++) {
+				
+			}
 		}
-		*/
 	}
 
 	public boolean addUser(String name, String hostname, String ip, String port) {

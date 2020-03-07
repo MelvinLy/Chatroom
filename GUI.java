@@ -242,6 +242,9 @@ public class GUI {
 				}
 				
 				try {
+					if(username.length() > 15) {
+						System.exit(1);
+					}
 					Client c = new Client(hostname, Integer.parseInt(directoryport));
 					c.send("joining" + " " + username + " " + serverport);
 				}
