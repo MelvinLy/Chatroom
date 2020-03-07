@@ -5,7 +5,7 @@ import java.util.*;
 public class Directory extends Thread {
 	private DatagramSocket socket;
 	private boolean running;
-	private byte[] buf = new byte[256];
+	private byte[] buf = new byte[576];
 	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
@@ -22,8 +22,6 @@ public class Directory extends Thread {
 		socket.receive(packet);
 		InetAddress address = packet.getAddress();
 		int port = packet.getPort();
-		
-		byte[] receive = new byte[576];
 		byte[] received = packet.getData();
 		String string = new String(received, 0, received.length);
 		String[] read = string.split(" ");
@@ -56,9 +54,13 @@ public class Directory extends Thread {
 		}
 		//Send list of users.
 		else if(read[0].equals("fetch")) {
-			String toSend = "";
 			for(int a = 0; a < db.size(); a++) {
-				
+				HashMap<String, String> currentMap = db.get(a);
+				ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+			    ObjectOutputStream out = new ObjectOutputStream(byteOut);
+			    out.writeObject(currentMap);
+			    DatagramPacket toSend = new DatagramPacket(byteOut.toByteArray(), byteOut.size(), address, port);
+			    socket.send(toSend);
 			}
 		}
 	}

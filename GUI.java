@@ -80,6 +80,7 @@ public class GUI {
 				}
 			}
 		}.start();
+		
 		new Thread() {
 			public void run() {
 				try {
