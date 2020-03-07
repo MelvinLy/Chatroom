@@ -4,11 +4,15 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUI {
 
+	private DatagramSocket udp;
 	String hostname;
 	String directoryport;
 	String serverport;
@@ -241,9 +245,13 @@ public class GUI {
 					}
 				}
 				
+				//Send to directory
 				try {
-					Client c = new Client(hostname, Integer.parseInt(directoryport));
-					c.send("joining" + " " + username + " " + serverport);
+					udp = new DatagramSocket();
+					byte[] message = ("joining" + " " + username + " " + serverport).getBytes();
+					DatagramPacket packet = new DatagramPacket(message, message.length, InetAddress.getByAddress(hostname.getBytes()), Integer.parseInt(directoryport));
+					udp.send(packet);
+					//c.send("joining" + " " + username + " " + serverport);
 				}
 				catch(Exception e1) {
 					e1.printStackTrace();

@@ -6,7 +6,7 @@ public class Directory extends Thread {
 	private DatagramSocket udp;
 	//private ServerSocket welcomeSocket;
 	//private Socket connectionSocket;
-	private byte[] buffer = new byte[1000];
+	private byte[] buffer = new byte[5000];
 	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
@@ -56,8 +56,14 @@ public class Directory extends Thread {
 		}
 		//Send list of users.
 		else if(read[0].equals("fetch")) {
-			ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
-			outToClient.writeObject(db);
+			//ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
+			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+			ObjectOutput oo = new ObjectOutputStream(bStream);
+			oo.writeObject(db);
+			oo.close();
+			byte[] message = bStream.toByteArray();
+			DatagramPacket temp = new DatagramPacket(message, message.length, packet.getAddress(), packet.getPort());
+			udp.send(temp);
 		}
 	}
 
@@ -78,11 +84,12 @@ public class Directory extends Thread {
 		System.out.printf("Received: \"%s\" %s %s %s \n", name, hostname, ip, port);
 		return true;
 	}
-
+	/*
 	public void send(String message) throws Exception {
 		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		outToClient.writeBytes(message + "\n");
 	}
+	*/
 
 	public static void main(String[] args) throws Exception { 
 		int port = Integer.parseInt(args[0]);
