@@ -3,12 +3,14 @@ import java.io.*;
 import java.util.*;
 
 public class Directory extends Thread {
-	private ServerSocket welcomeSocket;
-	private Socket connectionSocket;
+	private DatagramSocket udp;
+	//private ServerSocket welcomeSocket;
+	//private Socket connectionSocket;
+	private byte[] buffer = new byte[1000];
 	private ArrayList<HashMap<String, String>> db;
 
 	public Directory(int port) throws Exception {
-		this.welcomeSocket = new ServerSocket(port);
+		//this.welcomeSocket = new ServerSocket(port);
 		this.db = new ArrayList<HashMap<String, String>>();
 	}
 
@@ -17,9 +19,13 @@ public class Directory extends Thread {
 	}
 
 	public void listen() throws Exception {
-		this.connectionSocket = welcomeSocket.accept();
-		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		String[] read = inFromClient.readLine().split(" ");
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+		udp.receive(packet);
+		//this.connectionSocket = welcomeSocket.accept();
+		
+		byte[] data = packet.getData();
+		String byteToString = new String(data);
+		String[] read = byteToString.split(" ");
 		//Removes user.
 		if(read[0].equals("leaving")) {
 			String username = "";
@@ -43,8 +49,8 @@ public class Directory extends Thread {
 				name = name + read[a] + " ";
 			}
 			name = name + read[read.length - 2];
-			String hostname = this.connectionSocket.getInetAddress().getHostName();
-			String ip = this.connectionSocket.getInetAddress().getHostAddress();
+			String hostname = udp.getInetAddress().getHostName();
+			String ip = udp.getInetAddress().getHostAddress();
 			String port = read[read.length - 1];
 			addUser(name, hostname, ip, port);
 		}
