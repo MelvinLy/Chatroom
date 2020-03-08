@@ -56,7 +56,7 @@ public class GUI {
 			}
 		});
 		//Fetch thread.
-		/*
+		
 		new Thread() {
 			public void run() {
 				while(true) {
@@ -64,8 +64,7 @@ public class GUI {
 						if(semaphore == 1) {
 							//CRITICAL SECTION
 							semaphore = 0;
-							c2 = new Client(hostname, Integer.parseInt(directoryport));
-							db = c2.fetchOnline();
+							db = udp.fetchDb();
 							String replace = "List of Users Online:";
 							for(int a = 0; a < db.size(); a++) {
 								HashMap<String, String> current = db.get(a);
@@ -81,7 +80,7 @@ public class GUI {
 				}
 			}
 		}.start();
-		*/
+		
 		new Thread() {
 			public void run() {
 				try {
