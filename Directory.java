@@ -28,14 +28,14 @@ public class Directory extends Thread {
 		//Removes user.
 		if(read[0].equals("leaving")) {
 			String username = "";
-			for(int a = 1; a < read.length - 1; a++) {
+			for(int a = 1; a < read.length - 2; a++) {
 				username = username + read[a] + " ";
 			}
-			username = username + read[read.length - 1];
+			username = username + read[read.length - 2];
 			for(int a = 0; a < db.size(); a++) {
 				HashMap<String, String> current = db.get(a);
 				if(current.get("Username").equals(username)) {
-					System.out.printf("Removed: %s from the system.\n", username);
+					System.out.printf("Removed: \"%s\" from the system.\n", username);
 					db.remove(a);
 					return;
 				}
@@ -44,13 +44,13 @@ public class Directory extends Thread {
 		//Registers user.
 		else if(read[0].equals("joining")) {
 			String name = "";
-			for(int a = 1; a < read.length - 2; a++) {
+			for(int a = 1; a < read.length - 3; a++) {
 				name = name + read[a] + " ";
 			}
-			name = name + read[read.length - 2];
+			name = name + read[read.length - 3];
 			String hostname = address.getHostName();
 			String ip = address.getHostAddress();
-			addUser(name, hostname, ip, port + "");
+			addUser(name, hostname, ip, read[read.length - 2] + "");
 		}
 		//Send list of users.
 		else if(read[0].equals("fetch")) {

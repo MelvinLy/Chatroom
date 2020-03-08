@@ -26,13 +26,6 @@ public class Client extends Thread {
 		clientSocket.close();
 	}
 
-	public ArrayList<HashMap<String, String>> fetchOnline() throws Exception {
-		send("fetch ");
-		InputStream inputStream = clientSocket.getInputStream();
-		ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-		return (ArrayList<HashMap<String, String>>) objectInputStream.readObject();
-	}
-
 
 	/*
 	public static void main(String[] args) throws Exception {

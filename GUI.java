@@ -20,6 +20,7 @@ public class GUI {
 	Client c;
 	Client c2;
 	Server s;
+	UDPClient udp;
 	int semaphore = 1;
 
 	public GUI(){
@@ -46,8 +47,7 @@ public class GUI {
 		jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
-					Client c = new Client(hostname, Integer.parseInt(directoryport));
-					c.send("leaving " + username);
+					udp.send("leaving " + username + " ");
 				}
 				catch(Exception e1) {
 					e1.printStackTrace();
@@ -56,6 +56,7 @@ public class GUI {
 			}
 		});
 		//Fetch thread.
+		/*
 		new Thread() {
 			public void run() {
 				while(true) {
@@ -80,7 +81,7 @@ public class GUI {
 				}
 			}
 		}.start();
-		
+		*/
 		new Thread() {
 			public void run() {
 				try {
@@ -226,17 +227,16 @@ public class GUI {
 				serverport = cPort.getText();
 				username = user.getText();
 				
-				ArrayList<HashMap<String, String>> temp = null;
 				try {
-					Client tempC = new Client(hostname, Integer.parseInt(directoryport));
-					temp = tempC.fetchOnline();
+					udp = new UDPClient(Integer.parseInt(directoryport), hostname);
+					db = udp.fetchDb();
 				} catch (Exception e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				
-				for(int a = 0; a < temp.size(); a++) {
-					HashMap<String, String> current = temp.get(a);
+				for(int a = 0; a < db.size(); a++) {
+					HashMap<String, String> current = db.get(a);
 					if(current.get("Username").equals(username)) {
 						System.exit(0);
 					}
@@ -246,8 +246,8 @@ public class GUI {
 					if(username.length() > 15) {
 						System.exit(1);
 					}
-					Client c = new Client(hostname, Integer.parseInt(directoryport));
-					c.send("joining" + " " + username + " " + serverport);
+
+					udp.send("joining" + " " + username + " " + serverport + " ");
 				}
 				catch(Exception e1) {
 					e1.printStackTrace();
