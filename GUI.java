@@ -15,14 +15,16 @@ public class GUI {
 	String directoryport;
 	String serverport;
 	String username;
+	String roomip;
 	ArrayList<HashMap<String, String>> db;
 	JTextArea online;
 	JTextArea history;
 	JTextArea messageInput;
 	Client c;
-	Client c2;
 	Server s;
 	UDPClient udp;
+	JCheckBox check;
+	boolean isServer;
 	int semaphore = 1;
 
 	public GUI(){
@@ -58,7 +60,6 @@ public class GUI {
 			}
 		});
 		//Fetch thread.
-		
 		new Thread() {
 			public void run() {
 				while(true) {
@@ -83,11 +84,12 @@ public class GUI {
 				}
 			}
 		}.start();
-		
+		//Listen thread
 		new Thread() {
 			public void run() {
 				try {
-					s = new Server(Integer.parseInt(serverport));
+					//The chatroom host server.
+					c = new Client(roomip, Integer.parseInt(serverport));
 				} 
 				catch (Exception e1) {
 					e1.printStackTrace();
@@ -209,25 +211,28 @@ public class GUI {
     	JTextArea dPort = new JTextArea("Enter the Directory Server Port");
     	JTextArea host = new JTextArea("Enter Server Host Name");
 		 */
-		JTextArea user = new JTextArea("big boi");
-		JTextArea cPort = new JTextArea("56788");
-		JTextArea dPort = new JTextArea("56789");
-		JTextArea host = new JTextArea("10.0.0.199");
+		JTextArea user = new JTextArea("big boi"); //Username
+		JTextArea cPort = new JTextArea("56788"); //Your port if you are hosting the room
+		JTextArea roomipbox = new JTextArea("10.0.0.199"); //Room host ip
+		JTextArea dPort = new JTextArea("56789"); //Directory server port
+		JTextArea host = new JTextArea("10.0.0.199"); //Directory server ip
 		user.setPreferredSize(new Dimension(450, 20));
 		cPort.setPreferredSize(new Dimension(450, 20));
 		dPort.setPreferredSize(new Dimension(450, 20));
+		roomipbox.setPreferredSize(new Dimension(450, 20));
 		host.setPreferredSize(new Dimension(450, 20));    	 
-
+		check = new JCheckBox("Host chatroom?");
 		JButton send = new JButton("Send to Directory Server");
 
 		class SendListener implements MouseListener {
 
 			public void mouseClicked(MouseEvent e) {
-
+				isServer = check.isSelected();
 				hostname = host.getText();
 				directoryport = dPort.getText();
 				serverport = cPort.getText();
 				username = user.getText();
+				roomip = roomipbox.getText();
 				
 				try {
 					udp = new UDPClient(Integer.parseInt(directoryport), hostname);
@@ -277,8 +282,10 @@ public class GUI {
 
 		panel.add(user);
 		panel.add(cPort);
+		panel.add(roomipbox);
 		panel.add(dPort);
 		panel.add(host);
+		panel.add(check);
 		panel.add(send);
 		jFrame.add(panel);
 
