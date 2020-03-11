@@ -114,6 +114,7 @@ public class GUI {
 					while(true) {
 						try {
 							String text = s.listen();
+							s.send(null);
 							if(semaphore == 1) {
 								//CRITICAL SECTION
 								semaphore = 0;
