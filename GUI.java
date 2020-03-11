@@ -93,14 +93,14 @@ public class GUI {
 				} 
 				catch (Exception e1) {
 					e1.printStackTrace();
-					System.exit(1);
+					System.err.println("No chatroom.");
 				}
 				while(true) {
 					try {
 						String incoming = s.listen();
 						history.append("\n" + incoming);
 					} catch (Exception e) {
-						e.printStackTrace();
+						
 					}
 				}
 			}
@@ -115,26 +115,31 @@ public class GUI {
 			public void mouseClicked(MouseEvent e) {
 				while(true) {
 					String text = messageInput.getText();
-					if(text.equals("") || text == null) {
-						return;
-					}
-					if(semaphore == 1) {
-						//CRITICAL SECTION
-						semaphore = 0;
-						messageInput.setText(null);
-						text = username + ": " + text;
-						for(int a = 0; a < db.size(); a++) {
-							HashMap<String, String> current = db.get(a);
-							try {
-								Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
-								out.send(text);
-							}
-							catch (Exception e1) {
-
-							}
+					if(isServer) {
+						if(text.equals("") || text == null) {
+							return;
 						}
-						semaphore = 1;
-						return;
+						if(semaphore == 1) {
+							//CRITICAL SECTION
+							semaphore = 0;
+							messageInput.setText(null);
+							text = username + ": " + text;
+							for(int a = 0; a < db.size(); a++) {
+								HashMap<String, String> current = db.get(a);
+								try {
+									Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
+									out.send(text);
+								}
+								catch (Exception e1) {
+
+								}
+							}
+							semaphore = 1;
+							return;
+						}
+					}
+					else {
+						
 					}
 				}
 			}
@@ -213,9 +218,9 @@ public class GUI {
 		 */
 		JTextArea user = new JTextArea("big boi"); //Username
 		JTextArea cPort = new JTextArea("56788"); //Your port if you are hosting the room
-		JTextArea roomipbox = new JTextArea("10.0.0.199"); //Room host ip
+		JTextArea roomipbox = new JTextArea("localhost"); //Room host ip
 		JTextArea dPort = new JTextArea("56789"); //Directory server port
-		JTextArea host = new JTextArea("10.0.0.199"); //Directory server ip
+		JTextArea host = new JTextArea("localhost"); //Directory server ip
 		user.setPreferredSize(new Dimension(450, 20));
 		cPort.setPreferredSize(new Dimension(450, 20));
 		dPort.setPreferredSize(new Dimension(450, 20));
@@ -233,7 +238,7 @@ public class GUI {
 				serverport = cPort.getText();
 				username = user.getText();
 				roomip = roomipbox.getText();
-				
+
 				try {
 					udp = new UDPClient(Integer.parseInt(directoryport), hostname);
 					db = udp.fetchDb();
@@ -242,14 +247,14 @@ public class GUI {
 					e2.printStackTrace();
 					System.exit(1);
 				}
-				
+
 				for(int a = 0; a < db.size(); a++) {
 					HashMap<String, String> current = db.get(a);
 					if(current.get("Username").equals(username)) {
 						System.exit(0);
 					}
 				}
-				
+
 				try {
 					if(username.length() > 15) {
 						System.exit(1);
@@ -268,6 +273,14 @@ public class GUI {
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}
+				if(isServer) {
+					try {
+						s = new Server(Integer.parseInt(serverport));
+					} catch (Exception e1) {
+						e1.printStackTrace();
+						System.exit(1);
+					}
 				}
 			}
 
@@ -297,8 +310,11 @@ public class GUI {
 		jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
+					udp.send("leaving " + username);
+					/*
 					Client c = new Client(hostname, Integer.parseInt(directoryport));
 					c.send("leaving " + username);
+					*/
 				}
 				catch(Exception e1) {
 
