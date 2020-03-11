@@ -100,7 +100,7 @@ public class GUI {
 						String incoming = s.listen();
 						history.append("\n" + incoming);
 					} catch (Exception e) {
-						
+
 					}
 				}
 			}
@@ -139,7 +139,22 @@ public class GUI {
 						}
 					}
 					else {
+						if(text.equals("") || text == null) {
+							return;
+						}
+						messageInput.setText(null);
+						text = username + ": " + text;
+						try {
+							Client out;
+							out = new Client(roomip, Integer.parseInt(serverport));
+							out.send(text);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						
+						return;
+
 					}
 				}
 			}
@@ -314,7 +329,7 @@ public class GUI {
 					/*
 					Client c = new Client(hostname, Integer.parseInt(directoryport));
 					c.send("leaving " + username);
-					*/
+					 */
 				}
 				catch(Exception e1) {
 
