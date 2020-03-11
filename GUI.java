@@ -116,7 +116,6 @@ public class GUI {
 							if(semaphore == 1) {
 								//CRITICAL SECTION
 								semaphore = 0;
-								text = username + ": " + text;
 								for(int a = 0; a < db.size(); a++) {
 									HashMap<String, String> current = db.get(a);
 									try {
@@ -158,6 +157,7 @@ public class GUI {
 							messageInput.setText(null);
 							text = username + ": " + text;
 							for(int a = 0; a < db.size(); a++) {
+								System.out.println("");
 								HashMap<String, String> current = db.get(a);
 								try {
 									Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
