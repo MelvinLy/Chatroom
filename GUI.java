@@ -323,14 +323,6 @@ public class GUI {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if(isServer) {
-					try {
-						s = new Server(Integer.parseInt(serverport));
-					} catch (Exception e1) {
-						e1.printStackTrace();
-						System.exit(1);
-					}
-				}
 			}
 
 			public void mousePressed(MouseEvent e) {}
