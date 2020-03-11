@@ -108,6 +108,7 @@ public class GUI {
 		
 		//Listen as server thread
 		if(isServer) {
+			this.s = new Server(Integer.parseInt(serverport));
 			new Thread() {
 				public void run() {
 					while(true) {
