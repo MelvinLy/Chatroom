@@ -267,9 +267,9 @@ public class GUI {
 		 */
 		JTextArea user = new JTextArea("big boi"); //Username
 		JTextArea cPort = new JTextArea("56788"); //Your port if you are hosting the room
-		JTextArea roomipbox = new JTextArea("localhost"); //Room host ip
+		JTextArea roomipbox = new JTextArea("10.0.0.199"); //Room host ip
 		JTextArea dPort = new JTextArea("56789"); //Directory server port
-		JTextArea host = new JTextArea("localhost"); //Directory server ip
+		JTextArea host = new JTextArea("10.0.0.199"); //Directory server ip
 		user.setPreferredSize(new Dimension(450, 20));
 		cPort.setPreferredSize(new Dimension(450, 20));
 		dPort.setPreferredSize(new Dimension(450, 20));
