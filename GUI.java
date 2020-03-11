@@ -84,7 +84,7 @@ public class GUI {
 				}
 			}
 		}.start();
-		//Listen thread
+		//Listen as client thread
 		new Thread() {
 			public void run() {
 				try {
@@ -105,6 +105,39 @@ public class GUI {
 				}
 			}
 		}.start();
+		
+		//Listen as server thread
+		if(isServer) {
+			new Thread() {
+				public void run() {
+					while(true) {
+						try {
+							String text = s.listen();
+							if(semaphore == 1) {
+								//CRITICAL SECTION
+								semaphore = 0;
+								text = username + ": " + text;
+								for(int a = 0; a < db.size(); a++) {
+									HashMap<String, String> current = db.get(a);
+									try {
+										Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
+										out.send(text);
+									}
+									catch (Exception e1) {
+
+									}
+								}
+								semaphore = 1;
+							}
+						} catch (Exception e) {
+							semaphore = 1;
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}.start();
+		}
 	}
 
 	private JPanel createButtons() {
