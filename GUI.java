@@ -75,6 +75,7 @@ public class GUI {
 						}
 						Thread.sleep(5000);
 					} catch (Exception ex) {
+						semaphore = 1;
 						Thread.currentThread().interrupt();
 					}
 				}
