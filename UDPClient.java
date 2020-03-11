@@ -18,6 +18,7 @@ public class UDPClient extends Thread {
 	
 	public UDPClient(int port, String hostname) throws SocketException, UnknownHostException {
 		udp = new DatagramSocket();
+		udp.setSoTimeout(5000);
 		this.port = port;
 		address = InetAddress.getByName(hostname);
 	}

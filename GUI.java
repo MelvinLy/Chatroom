@@ -235,6 +235,7 @@ public class GUI {
 				} catch (Exception e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
+					System.exit(1);
 				}
 				
 				for(int a = 0; a < db.size(); a++) {
