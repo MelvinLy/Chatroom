@@ -85,43 +85,42 @@ public class GUI {
 				}
 			}
 		}.start();
-		
-		//Listen as server thread
-				new Thread() {
-					public void run() {
-						try {
-							s = new Server(Integer.parseInt(serverport));
-						} catch (Exception e2) {
-							e2.printStackTrace();
-						}
-						while(true && isServer) {
-							System.out.println(s);
-							try {
-								String text = s.listen();
-								if(semaphore == 1 && text != null) {
-									//CRITICAL SECTION
-									semaphore = 0;
-									for(int a = 0; a < db.size(); a++) {
-										HashMap<String, String> current = db.get(a);
-										try {
-											Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
-											out.send(text);
-										}
-										catch (Exception e1) {
 
-										}
-									}
-									semaphore = 1;
+		//Listen as server thread
+		new Thread() {
+			public void run() {
+				try {
+					s = new Server(Integer.parseInt(serverport));
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				while(true && isServer) {
+					try {
+						String text = s.listen();
+						if(semaphore == 1 && text != null) {
+							//CRITICAL SECTION
+							semaphore = 0;
+							for(int a = 0; a < db.size(); a++) {
+								HashMap<String, String> current = db.get(a);
+								try {
+									Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
+									out.send(text);
 								}
-							} catch (Exception e) {
-								semaphore = 1;
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								catch (Exception e1) {
+
+								}
 							}
+							semaphore = 1;
 						}
+					} catch (Exception e) {
+						semaphore = 1;
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				}.start();
-		
+				}
+			}
+		}.start();
+
 		//Listen as client thread
 		new Thread() {
 			public void run() {
@@ -150,7 +149,7 @@ public class GUI {
 			}
 		}.start();
 
-		
+
 
 	}
 
