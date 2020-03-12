@@ -320,7 +320,7 @@ public class GUI {
 						System.exit(1);
 					}
 
-					udp.send("joining" + " " + username + " " + serverport + " ");
+					udp.send("joining" + " " + username + " " + selfserverport + " ");
 				}
 				catch(Exception e1) {
 					e1.printStackTrace();
@@ -364,10 +364,6 @@ public class GUI {
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
 					udp.send("leaving " + username);
-					/*
-					Client c = new Client(hostname, Integer.parseInt(directoryport));
-					c.send("leaving " + username);
-					 */
 				}
 				catch(Exception e1) {
 
