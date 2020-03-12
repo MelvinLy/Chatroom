@@ -84,7 +84,7 @@ public class GUI {
 					}
 				}
 			}
-		}.start();
+		}.run();
 		//Listen as client thread
 		new Thread() {
 			public void run() {
@@ -111,7 +111,7 @@ public class GUI {
 					}
 				}
 			}
-		}.start();
+		}.run();
 
 		//Listen as server thread
 		new Thread() {
@@ -147,7 +147,7 @@ public class GUI {
 					}
 				}
 			}
-		}.start();
+		}.run();
 
 	}
 
