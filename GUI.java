@@ -106,6 +106,7 @@ public class GUI {
 					try {
 						String incoming = s2.listen();
 						history.append("\n" + incoming);
+						System.out.println("BOOP");
 					} catch (Exception e) {
 
 					}
@@ -116,6 +117,7 @@ public class GUI {
 		//Listen as server thread
 		if(isServer) {
 			this.s = new Server(Integer.parseInt(serverport));
+			System.out.println(serverport);
 			new Thread() {
 				public void run() {
 					while(true) {
@@ -276,7 +278,7 @@ public class GUI {
     	JTextArea host = new JTextArea("Enter Server Host Name");
 		 */
 		JTextArea user = new JTextArea("big boi"); //Username\
-		JTextArea selfport = new JTextArea("56777");
+		JTextArea selfport = new JTextArea("56777"); //Own server port
 		JTextArea cPort = new JTextArea("56788"); //Your port if you are hosting the room
 		JTextArea roomipbox = new JTextArea("10.0.0.199"); //Room host ip
 		JTextArea dPort = new JTextArea("56789"); //Directory server port
