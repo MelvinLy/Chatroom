@@ -1,7 +1,7 @@
 import java.net.*; 
 import java.io.*; 
 
-public class Server extends Thread {
+public class Server {
 	private ServerSocket welcomeSocket;
 	private Socket connectionSocket;
 	

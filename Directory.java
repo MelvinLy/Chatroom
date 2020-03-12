@@ -2,7 +2,7 @@ import java.net.*;
 import java.io.*; 
 import java.util.*;
 
-public class Directory extends Thread {
+public class Directory {
 	private DatagramSocket socket;
 	private boolean running;
 	private byte[] buf = new byte[576];

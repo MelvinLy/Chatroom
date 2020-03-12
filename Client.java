@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.io.*; 
 
-public class Client extends Thread {
+public class Client {
 	private Socket clientSocket;
 
 	public Client(String name, int port) throws Exception {

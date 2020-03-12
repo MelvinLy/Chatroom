@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UDPClient extends Thread {
+public class UDPClient {
 	private DatagramSocket udp;
 	private InetAddress address;
 	private int port;
