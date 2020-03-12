@@ -103,6 +103,7 @@ public class GUI {
 					System.err.println("No chatroom.");
 				}
 				while(true) {
+					System.out.println("Entering loop");
 					try {
 						String incoming = s2.listen();
 						history.append("\n" + incoming);
