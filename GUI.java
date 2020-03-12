@@ -268,17 +268,20 @@ public class GUI {
 
 		/*
     	JTextArea user = new JTextArea("Enter Username");
-    	JTextArea cPort = new JTextArea("Enter Your Server Port");
+    	JTextArea selfport = new JTextArea("Enter Your Own Server Port.");
+    	JTextArea cPort = new JTextArea("Enter the Server Port to Connect to.");
     	JTextArea dPort = new JTextArea("Enter the Directory Server Port");
     	JTextArea host = new JTextArea("Enter Server Host Name");
 		 */
-		JTextArea user = new JTextArea("big boi"); //Username
+		JTextArea user = new JTextArea("big boi"); //Username\
+		JTextArea selfport = new JTextArea("56777");
 		JTextArea cPort = new JTextArea("56788"); //Your port if you are hosting the room
 		JTextArea roomipbox = new JTextArea("10.0.0.199"); //Room host ip
 		JTextArea dPort = new JTextArea("56789"); //Directory server port
 		JTextArea host = new JTextArea("10.0.0.199"); //Directory server ip
 		user.setPreferredSize(new Dimension(450, 20));
 		cPort.setPreferredSize(new Dimension(450, 20));
+		selfport.setPreferredSize(new Dimension(450, 20));
 		dPort.setPreferredSize(new Dimension(450, 20));
 		roomipbox.setPreferredSize(new Dimension(450, 20));
 		host.setPreferredSize(new Dimension(450, 20));    	 
@@ -289,6 +292,7 @@ public class GUI {
 
 			public void mouseClicked(MouseEvent e) {
 				isServer = check.isSelected();
+				selfserverport = selfport.getText();
 				hostname = host.getText();
 				directoryport = dPort.getText();
 				serverport = cPort.getText();
@@ -342,6 +346,7 @@ public class GUI {
 		send.addMouseListener(new SendListener());
 
 		panel.add(user);
+		panel.add(selfport);
 		panel.add(cPort);
 		panel.add(roomipbox);
 		panel.add(dPort);
