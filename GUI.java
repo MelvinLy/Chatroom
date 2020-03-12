@@ -89,13 +89,10 @@ public class GUI {
 		//Listen as server thread
 		new Thread() {
 			public void run() {
-				try {
-					s = new Server(Integer.parseInt(serverport));
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
+
 				while(isServer) {
 					try {
+						s = new Server(Integer.parseInt(serverport));
 						String text = s.listen();
 						if(semaphore == 1 && text != null) {
 							//CRITICAL SECTION
@@ -112,6 +109,7 @@ public class GUI {
 							}
 							semaphore = 1;
 						}
+						
 					} catch (Exception e) {
 						semaphore = 1;
 						// TODO Auto-generated catch block
@@ -139,7 +137,7 @@ public class GUI {
 					e1.printStackTrace();
 					System.err.println("No chatroom.");
 				}
-				*/
+				 */
 				while(true) {
 					try {
 						String incoming = s2.listen();

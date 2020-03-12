@@ -14,6 +14,7 @@ public class Server {
 		String clientSentence;
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		clientSentence = inFromClient.readLine();
+		this.connectionSocket.close();
 		return clientSentence;
 	}
 	
