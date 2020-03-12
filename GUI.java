@@ -186,7 +186,8 @@ public class GUI {
 						messageInput.setText(null);
 						text = username + ": " + text;
 						try {
-							System.out.println("Trying");
+							System.out.println(roomip);
+							System.out.println(serverport);
 							Client out;
 							out = new Client(roomip, Integer.parseInt(serverport));
 							out.send(text);
