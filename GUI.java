@@ -120,26 +120,26 @@ public class GUI {
 				try {
 					s = new Server(Integer.parseInt(serverport));
 				} catch (Exception e2) {
+
 				}
 				while(true && isServer) {			
 					try {
-						
 						String text = s.listen();
-						if(semaphore == 1 && text != null) {
-							//CRITICAL SECTION
-							semaphore = 0;
-							for(int a = 0; a < db.size(); a++) {
-								HashMap<String, String> current = db.get(a);
-								try {
-									Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
-									out.send(text);
-								}
-								catch (Exception e1) {
 
-								}
+						//CRITICAL SECTION
+						semaphore = 0;
+						for(int a = 0; a < db.size(); a++) {
+							HashMap<String, String> current = db.get(a);
+							try {
+								Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
+								out.send(text);
 							}
-							semaphore = 1;
+							catch (Exception e1) {
+
+							}
 						}
+						semaphore = 1;
+
 					} catch (Exception e) {
 						semaphore = 1;
 						// TODO Auto-generated catch block
@@ -193,8 +193,7 @@ public class GUI {
 							System.out.println(roomip);
 							System.out.println(serverport);
 							Client out;
-							//out = new Client(roomip, Integer.parseInt(serverport));
-							out = new Client(roomip, 56666);
+							out = new Client(roomip, Integer.parseInt(serverport));
 							out.send(text);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
