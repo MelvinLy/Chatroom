@@ -103,7 +103,6 @@ public class GUI {
 					System.err.println("No chatroom.");
 				}
 				while(true) {
-					System.out.println("Entering loop");
 					try {
 						String incoming = s2.listen();
 						history.append("\n" + incoming);
@@ -187,6 +186,7 @@ public class GUI {
 						messageInput.setText(null);
 						text = username + ": " + text;
 						try {
+							System.out.println("Trying");
 							Client out;
 							out = new Client(roomip, Integer.parseInt(serverport));
 							out.send(text);
