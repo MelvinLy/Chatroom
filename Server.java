@@ -21,17 +21,6 @@ public class Server {
 		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		outToClient.writeBytes(message + "\n");
 	}
-	
-	public void run() {
-		try {
-			while(true) {
-				listen();
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	/*
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(56789);
