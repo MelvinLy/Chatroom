@@ -94,7 +94,7 @@ public class GUI {
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
-				while(true && isServer) {
+				while(isServer) {
 					try {
 						String text = s.listen();
 						if(semaphore == 1 && text != null) {
@@ -130,6 +130,7 @@ public class GUI {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
+				/*
 				try {
 					//The chatroom host server.
 					c = new Client(roomip, Integer.parseInt(serverport));
@@ -138,6 +139,7 @@ public class GUI {
 					e1.printStackTrace();
 					System.err.println("No chatroom.");
 				}
+				*/
 				while(true) {
 					try {
 						String incoming = s2.listen();
