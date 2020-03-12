@@ -13,6 +13,7 @@ public class GUI {
 
 	String hostname;
 	String directoryport;
+	String selfserverport;
 	String serverport;
 	String username;
 	String roomip;
@@ -22,6 +23,7 @@ public class GUI {
 	JTextArea messageInput;
 	Client c;
 	Server s;
+	Server s2;
 	UDPClient udp;
 	JCheckBox check;
 	boolean isServer;
@@ -87,6 +89,12 @@ public class GUI {
 		new Thread() {
 			public void run() {
 				try {
+					s2 = new Server(Integer.parseInt(selfserverport));
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				try {
 					//The chatroom host server.
 					c = new Client(roomip, Integer.parseInt(serverport));
 				} 
@@ -96,7 +104,7 @@ public class GUI {
 				}
 				while(true) {
 					try {
-						String incoming = s.listen();
+						String incoming = s2.listen();
 						history.append("\n" + incoming);
 					} catch (Exception e) {
 
@@ -113,8 +121,7 @@ public class GUI {
 					while(true) {
 						try {
 							String text = s.listen();
-							s.send(null);
-							if(semaphore == 1) {
+							if(semaphore == 1 && text != null) {
 								//CRITICAL SECTION
 								semaphore = 0;
 								for(int a = 0; a < db.size(); a++) {
@@ -158,8 +165,8 @@ public class GUI {
 							messageInput.setText(null);
 							text = username + ": " + text;
 							for(int a = 0; a < db.size(); a++) {
-								System.out.println("");
 								HashMap<String, String> current = db.get(a);
+								System.out.println(current);
 								try {
 									Client out = new Client(current.get("IP"), Integer.parseInt(current.get("Port")));
 									out.send(text);
